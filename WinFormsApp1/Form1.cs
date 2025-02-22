@@ -60,39 +60,68 @@ namespace WinFormsApp3
             Graphics Graphicsbriz = pictureBox3.CreateGraphics();
             int A = int.Parse(textBox3.Text);
             int B = int.Parse(textBox2.Text);
-            int d = 0; // ошибка
-            int u = 12 * B;
-            int v = 12 * B + 8 * A;
-            int l = A * B;
             int x = 0;
             int y = B;
 
-            while (l > 0)
-            {
-                Graphicsbriz.DrawRectangle(Pens.Blue, 190 + x, 159 + y, 1, 1);
+            int d = (int)(B * B - A * A * B + 0.25 * A * A);
+            int u = 2 * B * B * x;
+            int v = 2 * A * A * y;
+
+
+            Graphicsbriz.DrawRectangle(Pens.Blue, 190 + x, 159 + y, 1, 1);
                 Graphicsbriz.DrawRectangle(Pens.Blue, 190 - x, 159 + y, 1, 1);
                 Graphicsbriz.DrawRectangle(Pens.Blue, 190 + x, 159 - y, 1, 1);
                 Graphicsbriz.DrawRectangle(Pens.Blue, 190 - x, 159 - y, 1, 1);
 
+            // Область 1
+            while (u < v)
+            {
+                x++;
+                u += 2 * B * B;
+
                 if (d < 0)
                 {
-                    d = d + u;
-                    u = u + 8 * B;
-                    v = v + 8 * A;
-                    l = l - B;
-
+                    d += B * B * (2 * x + 1);
                 }
-                else if (d >= 0)
+                else
                 {
-                    d = d + v;
-                    u = u + 8 * B;
-                    v = v + B * (B + A);
-                    l = l - (B + A);
-                    x = x + 1;
-
+                    y--;
+                    v -= 2 * A * A;
+                    d += B * B * (2 * x + 1) + A * A * (1 - 2 * y);
                 }
-                y = y + 1;
+
+                Graphicsbriz.DrawRectangle(Pens.Blue, 190 + x, 159 + y, 1, 1);
+                Graphicsbriz.DrawRectangle(Pens.Blue, 190 - x, 159 + y, 1, 1);
+                Graphicsbriz.DrawRectangle(Pens.Blue, 190 + x, 159 - y, 1, 1);
+                Graphicsbriz.DrawRectangle(Pens.Blue, 190 - x, 159 - y, 1, 1);
             }
+
+            // Область 2
+            d = (int)(B * B * (x + 0.5) * (x + 0.5) + A * A * (y - 1) * (y - 1) - A * A * B * B);
+
+            while (y >= 0)
+            {
+                y--;
+                v -= 2 * A * A;
+
+                if (d > 0)
+                {
+                    d += A * A * (1 - 2 * y);
+                }
+                else
+                {
+                    x++;
+                    u += 2 * B * B;
+                    d += B * B * (2 * x + 1) + A * A * (1 - 2 * y);
+                }
+
+                Graphicsbriz.DrawRectangle(Pens.Blue, 190 + x, 159 + y, 1, 1);
+                Graphicsbriz.DrawRectangle(Pens.Blue, 190 - x, 159 + y, 1, 1);
+                Graphicsbriz.DrawRectangle(Pens.Blue, 190 + x, 159 - y, 1, 1);
+                Graphicsbriz.DrawRectangle(Pens.Blue, 190 - x, 159 - y, 1, 1);
+            }
+
+
         }
     }
 }
